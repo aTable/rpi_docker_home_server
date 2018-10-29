@@ -4,28 +4,6 @@ services:
     build:
       context: ./images/openldap/
     image: bingen/${ARCH}-openldap:latest
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-    secrets:
-      - source: ldap_pwd
-        target: admin_pwd
-        uid: '999'
-        mode: 0440
-      - source: ldap_mail_pwd
-        target: mail_pwd
-        uid: '999'
-        mode: 0440
-      - source: ldap_nextcloud_pwd
-        target: nextcloud_pwd
-        uid: '999'
-        mode: 0440
-      - source: ldap_gogs_pwd
-        target: gogs_pwd
-        uid: '999'
-        mode: 0440
-    # container_name: openldap
     tty: true
     stdin_open: true
     env_file:
@@ -46,11 +24,6 @@ services:
     build:
       context: ./images/mariadb/
     image: bingen/${ARCH}-mariadb:latest
-    secrets:
-      - source: db_pwd
-        target: admin_pwd
-        mode: 0440
-    #container_name: mariadb
     env_file:
       - mariadb.env
     networks:
@@ -85,11 +58,6 @@ services:
     image: bingen/${ARCH}-mailserver:latest
     depends_on:
       - openldap
-    secrets:
-      - source: ldap_mail_pwd
-        target: ldap_pwd
-        uid: '999'
-        mode: 0440
     hostname: ${MAIL_HOSTNAME}.${MAIL_DOMAIN}
     #domainname: ${MAIL_DOMAIN}
     env_file:
@@ -115,34 +83,10 @@ services:
         - NEXTCLOUD_DATA_PATH=${NEXTCLOUD_DATA_PATH}
         - NEXTCLOUD_BACKUP_PATH=${NEXTCLOUD_BACKUP_PATH}
     image: bingen/${ARCH}-nextcloud:latest
-#    deploy:
-#      placement:
-#        constraints:
-#          - node.role == worker
     depends_on:
       - db
       - openldap
       #- haproxy
-    secrets:
-      - source: nextcloud_admin_pwd
-        target: admin_pwd
-        uid: '999'
-        mode: 0440
-      - source: ldap_nextcloud_pwd
-        target: ldap_pwd
-        uid: '999'
-        mode: 0440
-      - source: db_pwd
-        target: mysql_pwd
-        mode: 0440
-      - source: nextcloud_salt
-        target: salt
-        uid: '999'
-        mode: 0440
-      - source: nextcloud_secret
-        target: secret
-        uid: '999'
-        mode: 0440
     env_file:
       - nextcloud.env
     networks:
@@ -162,11 +106,6 @@ services:
       - "1022:22"
     volumes:
       - ${PAPERLESS_CONSUMPTION_VOLUME_PATH}:${PAPERLESS_CONSUMPTION_PATH}
-    secrets:
-      - source: paperless_ftp_pwd
-        target: ftp_pwd
-        uid: '999'
-        mode: 0440
     env_file:
       - sftp.env
 
@@ -185,25 +124,9 @@ services:
       - "2022:22"
     volumes:
       - ${GOGS_DATA_VOLUME_PATH}:/data
-    secrets:
-      - source: db_pwd
-        target: mysql_pwd
-        mode: 0440
-      - source: ldap_gogs_pwd
-        target: ldap_pwd
-        uid: '999'
-        mode: 0440
-      - source: gogs_admin_pwd
-        target: admin_pwd
-        uid: '999'
-        mode: 0440
 
   pihole:
     image: pihole/pihole:latest
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
     env_file:
       - pihole.env
     # cap_add: # for DHCP
@@ -219,36 +142,6 @@ services:
       - ${PIHOLE_DNSMASQ_VOLUME_PATH}:/etc/dnsmasq.d/
     restart: always
 
-  #wordpress:
-
-  #transmission:
-    #image: lsioarmhf/transmission:15.01.17
-
-secrets:
-  db_pwd:
-    external: true
-  ldap_pwd:
-    external: true
-  ldap_mail_pwd:
-    external: true
-  ldap_nextcloud_pwd:
-    external: true
-  ldap_gogs_pwd:
-    external: true
-  nextcloud_admin_pwd:
-    external: true
-  nextcloud_salt:
-    external: true
-  nextcloud_secret:
-    external: true
-  gogs_admin_pwd:
-    external: true
-  paperless_webserver_pwd:
-    external: true
-  paperless_passphrase:
-    external: true
-  paperless_ftp_pwd:
-    external: true
 networks:
   default:
-    driver: overlay
+    driver: bridge
