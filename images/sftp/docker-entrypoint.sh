@@ -14,10 +14,15 @@ useradd -d ${PAPERLESS_CONSUMPTION_DIR} -p `openssl passwd -1 ${PAPERLESS_FTP_PW
 chown ${PAPERLESS_FTP_USER} ${PAPERLESS_CONSUMPTION_DIR}
 chmod 777 ${PAPERLESS_CONSUMPTION_DIR}
 
-# Copy Server Public key if any (this is needed at least for Brother ADS-2400n)
+# Copy Server Host key if any (this is needed at least for Brother ADS-2400n)
 if [[ -s ${PAPERLESS_CONSUMPTION_DIR}/ssh_host_rsa_key.pub ]]; then
     cp ${PAPERLESS_CONSUMPTION_DIR}/ssh_host_rsa_key.pub /etc/ssh/;
 fi
+if [[ -s ${PAPERLESS_CONSUMPTION_DIR}/ssh_host_rsa_key ]]; then
+    cp ${PAPERLESS_CONSUMPTION_DIR}/ssh_host_rsa_key /etc/ssh/;
+fi
+sed -i 's/#HostKey \/etc\/ssh\/ssh_host_rsa_key/HostKey \/etc\/ssh\/ssh_host_rsa_key/g' /etc/ssh/sshd_config
+echo "HostKeyAlgorithms ssh-rsa" >> /etc/ssh/sshd_config
 
 # https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/45234
 mkdir -p /var/run/sshd

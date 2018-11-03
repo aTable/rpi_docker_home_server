@@ -3,7 +3,7 @@ FROM BASE_IMAGE_PLACEHOLDER
 # Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-       openssh-server \
+       openssh-server openssl \
     && rm -rf /var/lib/apt/lists/*
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
