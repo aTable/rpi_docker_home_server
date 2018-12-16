@@ -168,6 +168,8 @@ From your current installation:
 Configuration and deployment
 ----------------------------
 
+## Swarm mode
+
 First download the repos:
 
     git clone https://github.com/bingen/rpi_docker_home_server.git
@@ -197,6 +199,35 @@ Deploy docker stack (it will also rebuild components)
 If you add or modify a service, you can update it running:
 
     docker-compose build &&  docker push your-container && env $(cat .env | grep "^[A-Z]" | xargs)  docker stack deploy --compose-file docker-compose.yml your-stack
+
+## No swarm mode
+
+If it's a restart, clean first previous containers:
+
+    for i in $(docker ps -a | grep Exited | grep dhs | cut -f 1 -d ' '); do docker rm $i; done;
+
+Optionally build:
+
+    docker-compose build
+
+And then restart:
+
+    docker-compose --compatibility -p dhs up -d
+
+Note: `dhs` is just a custom prefix to easily identify containers, you can use your own.
+
+Add users:
+
+    ./add_users_noswarm.sh
+
+Add DNS entries:
+
+    ./add_dns_entries_noswarm.sh
+
+If you add or modify a service, you can update it running:
+
+    docker-compose build && docker-compose -p dhs up <your-service> -d
+
 
 Other useful commands
 ---------------------
