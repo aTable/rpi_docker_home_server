@@ -20,11 +20,11 @@ source .env
 # global domain
 echo server=/${LDAP_DOMAIN}/${IP_LOOKUP} > /tmp/${CONF_FILE}
 # mail
-#echo address=/${MAIL_HOSTNAME}.${LDAP_DOMAIN}/${IP_LOOKUP} > /tmp/${CONF_FILE}
+echo address=/${MAIL_HOSTNAME}.${LDAP_DOMAIN}/${IP_LOOKUP} > /tmp/${CONF_FILE}
 # Nextcloud
-#echo address=/${NEXTCLOUD_SERVER_NAME}.${LDAP_DOMAIN}/${IP_LOOKUP} >> /tmp/${CONF_FILE}
+echo address=/${NEXTCLOUD_SERVER_NAME}.${LDAP_DOMAIN}/${IP_LOOKUP} >> /tmp/${CONF_FILE}
 # gogs
-#echo address=/gogs.${LDAP_DOMAIN}/${IP_LOOKUP} >> /tmp/${CONF_FILE}
+echo address=/gogs.${LDAP_DOMAIN}/${IP_LOOKUP} >> /tmp/${CONF_FILE}
 
 # ##### Add entries to PiHole ###### #
 
