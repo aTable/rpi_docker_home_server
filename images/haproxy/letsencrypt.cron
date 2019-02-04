@@ -9,3 +9,6 @@ for _URL in `ls /etc/letsencrypt/live`; do
         /etc/letsencrypt/live/${_URL}/privkey.pem \
         > /etc/letsencrypt/haproxy/${_URL}.pem;
 done;
+
+# Reload HAProxy
+service haproxy reload
