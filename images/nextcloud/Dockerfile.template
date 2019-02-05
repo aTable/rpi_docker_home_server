@@ -7,7 +7,7 @@ ARG NEXTCLOUD_DATA_PATH
 ARG NEXTCLOUD_BACKUP_PATH
 
 RUN apt-get update && \
-    apt-get install -y wget bzip2 vim rsync mariadb-client cron sudo && \
+    apt-get install -y wget bzip2 vim rsync mariadb-client cron sudo php-imagick && \
     apt-get clean
 
 # Change upload-limits and -sizes
