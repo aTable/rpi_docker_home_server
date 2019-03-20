@@ -50,6 +50,8 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 COPY backup.sh /etc/cron.daily/backup
 RUN chmod +x /etc/cron.daily/backup
 
+RUN (crontab -l 2>/dev/null; echo "*/5  *  *  *  * php -f /var/www/nextcloud/cron.php") | crontab -u www-data -
+
 #VOLUME ${NEXTCLOUD_DATA_PATH}
 #VOLUME ${NEXTCLOUD_BACKUP_PATH}
 
