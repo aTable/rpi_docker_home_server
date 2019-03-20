@@ -9,7 +9,7 @@ RUN apt-get update && \
 RUN apt-get update && \
     apt-get install -y php7.2 php7.2-fpm php-pear php7.2-common \
     php7.2-mysql php7.2-cli php7.2-gd php7.2-curl php-apcu php7.2-opcache \
-    php7.2-mbstring php7.2-ldap php7.2-zip && \
+    php7.2-mbstring php7.2-ldap php7.2-zip php7.2-intl && \
     apt-get clean
 
 # overwrite the default-configuration with our own settings - enabling PHP
