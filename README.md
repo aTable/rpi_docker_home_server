@@ -226,7 +226,7 @@ Add DNS entries:
 
 If you add or modify a service, you can update it running:
 
-    docker-compose build && docker-compose -p dhs up <your-service> -d
+    docker-compose build && docker-compose -p dhs up -d <your-service>
 
 
 Other useful commands
