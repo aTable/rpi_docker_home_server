@@ -41,5 +41,7 @@ mv /usr/local/bin/letsencrypt.cron /etc/cron.monthly/letsencrypt
 # remove default cron job
 mv /etc/cron.d/certbot /tmp
 
+service cron status || service cron start
+
 # Start HAProxy
 haproxy -f $CFG_FILE
