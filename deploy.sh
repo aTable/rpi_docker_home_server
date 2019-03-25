@@ -76,5 +76,3 @@ while [ $NC_UP -eq 0 ]; do
     curl http://${host}/index.nginx-debian.html 2>/dev/null | grep title | grep Welcome 1>/dev/null;
     NC_UP=$((1 - $?));
 done;
-
-./letsencrypt.sh ${STACK_NAME}

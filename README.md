@@ -305,9 +305,7 @@ Need to log in as admin for the first time and enable Apps manually.
 
 Let's Encrypt
 -------------
-Run the following script to enable Let's Encrypt for Nextcloud:
-
-    ./letsencrypt.sh <your-stack-name>
+Notice that when updating your certificate, you will need to restart haproxy container, due to [this issue](https://stackoverflow.com/a/50480260/1937418)
 
 Own registry
 ------------
